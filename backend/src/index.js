@@ -1,12 +1,12 @@
-import express from 'express'
-import cors from 'cors'
-import helmet from 'helmet'
-import morgan from 'morgan'
-import path from 'path'
-import dotenv from 'dotenv'
-import mongoose from 'mongoose'
+const express = require('express')
+const cors = require('cors')
+const helmet = require('helmet')
+const morgan = require('morgan')
+const path = require('path')
+const mongoose = require('mongoose')
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') })
+const authRoutes = require('./routes/auth.routes')
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -15,6 +15,8 @@ app.use(helmet())
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
 app.use(morgan('dev'))
 app.use(express.json())
+
+app.use('/api/auth', authRoutes)
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -26,7 +28,7 @@ app.get('/api/health', (req, res) => {
 })
 
 mongoose
-  .connect(process.env.MONGO_URI as string)
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected')
     app.listen(PORT, () => {
