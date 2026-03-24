@@ -4,7 +4,7 @@ const { ApiError } = require("../utils/ApiError");
 const { ApiResponse } = require("../utils/ApiResponse");
 const { asyncHandler } = require("../utils/asyncHandler");
 
-const uploadResume = asyncHandler(async (req, res) => {
+const uploadResume = asyncHandler(async (req, res,next) => {
   if (!req.file) {
     throw new ApiError(400, "No file uploaded");
   }
@@ -28,7 +28,7 @@ const uploadResume = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, { resume }, "Resume uploaded successfully"));
 });
 
-const getMyResumes = asyncHandler(async (req, res) => {
+const getMyResumes = asyncHandler(async (req, res,next) => {
   const resumes = await Resume.find({
     user: req.userId,
     isActive: true,
@@ -39,7 +39,7 @@ const getMyResumes = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, { resumes }, "Resumes fetched successfully"));
 });
 
-const deleteResume = asyncHandler(async (req, res) => {
+const deleteResume = asyncHandler(async (req, res,next) => {
   const resume = await Resume.findOne({
     _id: req.params.id,
     user: req.userId,
