@@ -1,4 +1,6 @@
-const BASE_URL = "http://localhost:5001/api";
+
+const BASE_URL = "http://localhost:5001/api"
+
 
 export const apiCall = async (endpoint, method = "GET", body = null, token = null, isForm = false) => {
     const headers = {};
